@@ -9,7 +9,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>gz_cmake_vendor</buildtool_depend>
-  <buildtool_depend>gz-sim8</buildtool_depend>
+  <buildtool_depend>gz_sim_vendor</buildtool_depend>
   <buildtool_depend>gz_plugin_vendor</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
