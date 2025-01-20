@@ -8,9 +8,9 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>gz-cmake4</buildtool_depend>
+  <buildtool_depend>gz_cmake_vendor</buildtool_depend>
   <buildtool_depend>gz-sim8</buildtool_depend>
-  <buildtool_depend>gz-plugin3</buildtool_depend>
+  <buildtool_depend>gz_plugin_vendor</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
