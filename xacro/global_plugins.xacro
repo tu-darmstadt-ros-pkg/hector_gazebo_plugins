@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="global_plugins">
+        <plugin name='rgl::RGLServerPluginManager' filename='RGLServerPluginManager'>
+            <do_ignore_entities_in_lidar_link>true</do_ignore_entities_in_lidar_link>
+        </plugin>
+    </xacro:macro>
+</robot>

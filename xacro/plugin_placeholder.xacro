@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<sdf version="1.8" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Global plugins -->
+  <xacro:include filename="global_plugins.xacro" />
+
+  <model name='plugin_placeholder'>
+    <link name='dummy_link'>
+        <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1</mass>
+            <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+            </inertia>
+        </inertial>
+    </link>
+    <xacro:global_plugins/>     
+  </model>
+</sdf>
