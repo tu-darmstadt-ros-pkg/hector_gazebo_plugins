@@ -46,15 +46,6 @@ install(TARGETS MimicJoints
   LIBRARY DESTINATION plugins
 )
 
-# Add prebuilt plugin names here
-set(PREBPLUGINS
-)
-
-foreach(PLUGIN ${PREBPLUGINS})
-  set(OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/plugins/${PLUGIN})
-  configure_file(${CMAKE_SOURCE_DIR}/prebuilt_plugins/${PLUGIN} ${OUTPUT_FILE} COPYONLY)
-endforeach()
-
 install(DIRECTORY
   launch
   xacro
