@@ -48,10 +48,6 @@ install(TARGETS MimicJoints
 
 # Add prebuilt plugin names here
 set(PREBPLUGINS
-  libRGLServerPluginInstance.so
-  libRGLServerPluginManager.so
-  libRGLVisualize.so
-  libRobotecGPULidar.so
 )
 
 foreach(PLUGIN ${PREBPLUGINS})
