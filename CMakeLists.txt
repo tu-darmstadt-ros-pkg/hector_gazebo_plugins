@@ -7,13 +7,13 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(gz-cmake3 REQUIRED)
-find_package(gz-sim8 REQUIRED)
-find_package(gz-plugin2 REQUIRED COMPONENTS register)
+find_package(gz_cmake_vendor REQUIRED)
+find_package(gz_sim_vendor REQUIRED)
+find_package(gz_plugin_vendor REQUIRED)
+find_package(gz-cmake REQUIRED)
+find_package(gz-sim REQUIRED)
+find_package(gz-plugin REQUIRED COMPONENTS register)
 find_package(xacro REQUIRED)
-
-set(GZ_PLUGIN_VER ${gz-plugin2_VERSION_MAJOR})
-include_directories(include include)
 
 set(PLACEHOLDER_XACRO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/xacro/plugin_placeholder.xacro)
 set(GLOBAL_PLUGIN_XACRO ${CMAKE_CURRENT_SOURCE_DIR}/xacro/global_plugins.xacro)
@@ -38,9 +38,10 @@ install(FILES ${OUTPUT_FILE} DESTINATION share/${PROJECT_NAME}/plugin_placeholde
 # Add new plugins here which need to be built
 add_library(MimicJoints SHARED src/MimicJoints.cc)
 set_property(TARGET MimicJoints PROPERTY CXX_STANDARD 17)
+target_include_directories(MimicJoints PRIVATE include)
 target_link_libraries(MimicJoints
-  PRIVATE gz-plugin${GZ_PLUGIN_VER}::gz-plugin${GZ_PLUGIN_VER}
-  PRIVATE gz-sim8::gz-sim8)
+  PRIVATE gz-plugin::register
+  PRIVATE gz-sim::gz-sim)
 
 install(TARGETS MimicJoints
   LIBRARY DESTINATION plugins

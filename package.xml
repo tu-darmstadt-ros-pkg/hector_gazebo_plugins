@@ -8,9 +8,15 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>gz_cmake_vendor</buildtool_depend>
-  <buildtool_depend>gz_sim_vendor</buildtool_depend>
-  <buildtool_depend>gz_plugin_vendor</buildtool_depend>
+
+  <build_depend>xacro</build_depend>
+
+  <depend>gz_cmake_vendor</depend>
+  <depend>gz_sim_vendor</depend>
+  <depend>gz_plugin_vendor</depend>
+
+  <exec_depend>launch</exec_depend>
+  <exec_depend>gz_tools_vendor</exec_depend>
 
 <!--   <depend>rgl_gazebo_plugin</depend> -->
 

@@ -1,5 +1,7 @@
 # Common Gazebo Plugins
 
+Targets ROS 2 Lyrical with Gazebo Jetty (gz-sim 10).
+
 ## Available Plugins
 
     - MimicJoints
@@ -15,7 +17,7 @@ This will generate the `<pluginName>.so` library under `install/hector_gazebo_pl
 
 ## Run
 
-1. Include plugin in robot URDF or world file (see Hector Gazebo Harmonic documentation)
+1. Include plugin in robot URDF or world file (see Hector Gazebo Jetty documentation)
 
 2. Add this repo to your ROS 2 src directory if you have not done so
 

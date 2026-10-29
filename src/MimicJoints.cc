@@ -64,10 +64,14 @@ void MimicJoints::Configure(const gz::sim::Entity &_entity,
     return;
   }
 
+  // Make sure physics populates the joint state components read in Update
+  gz::sim::Joint(this->mainJoint).EnablePositionCheck(_ecm);
+  gz::sim::Joint(this->mainJoint).EnableVelocityCheck(_ecm);
+
   double mainPos = 0.0;
   auto mainJointPosOpt = gz::sim::Joint(this->mainJoint).Position(_ecm);
   //Need to verify if this also happens if initial positions for main joint is provided
-  if(mainJointPosOpt.has_value()){
+  if(mainJointPosOpt.has_value() && !mainJointPosOpt.value().empty()){
     gzdbg << "Initial position of main joint found" << std::endl;
     mainPos = mainJointPosOpt.value()[0];
   }
@@ -102,6 +106,8 @@ void MimicJoints::Configure(const gz::sim::Entity &_entity,
     std::string jointName = mimicJoint->Get<std::string>("joint");
     mimicJointNames.insert(jointName);
     auto mimicJointEntity = model.JointByName(_ecm, jointName);
+    gz::sim::Joint(mimicJointEntity).EnablePositionCheck(_ecm);
+    gz::sim::Joint(mimicJointEntity).EnableVelocityCheck(_ecm);
 
     // Initialize with default parameter values
     this->mimicJointsParams[mimicJointEntity] = {{"multiplier", 1.0},
@@ -155,9 +161,15 @@ void MimicJoints::Update(const gz::sim::UpdateInfo &_info,
     gz::sim::EntityComponentManager &_ecm)
   {
     gz::sim::Joint mainJoint = gz::sim::Joint(this->mainJoint);
-    
-    double mainPos = mainJoint.Position(_ecm).value()[0];
-    double mainVel = mainJoint.Velocity(_ecm).value()[0];
+
+    // Joint states are empty until physics has run its first step
+    auto mainPosOpt = mainJoint.Position(_ecm);
+    auto mainVelOpt = mainJoint.Velocity(_ecm);
+    if(!mainPosOpt || mainPosOpt->empty() || !mainVelOpt || mainVelOpt->empty())
+      return;
+
+    double mainPos = mainPosOpt->at(0);
+    double mainVel = mainVelOpt->at(0);
 
     double cmdForce = 0.0;
     auto jointForceCmd = _ecm.Component<gz::sim::components::JointForceCmd>(this->mainJoint);
@@ -177,8 +189,13 @@ void MimicJoints::Update(const gz::sim::UpdateInfo &_info,
       double targetPos = std::clamp(mainPos * params["multiplier"] + params["offset"], params["lower_limit"], params["upper_limit"]);
       double targetVel = std::clamp(mainVel * params["multiplier"], -params["velocity_limit"], params["velocity_limit"]);
 
-      double posCorrectionForce = K_p * (targetPos - mimicJoint.Position(_ecm).value()[0]);
-      double velCorrectionForce = K_d * (targetVel - mimicJoint.Velocity(_ecm).value()[0]);
+      auto mimicPosOpt = mimicJoint.Position(_ecm);
+      auto mimicVelOpt = mimicJoint.Velocity(_ecm);
+      if(!mimicPosOpt || mimicPosOpt->empty() || !mimicVelOpt || mimicVelOpt->empty())
+        continue;
+
+      double posCorrectionForce = K_p * (targetPos - mimicPosOpt->at(0));
+      double velCorrectionForce = K_d * (targetVel - mimicVelOpt->at(0));
 
       std::vector<double> mimicForceCmd = std::vector<double>{std::clamp(cmdForce + posCorrectionForce + velCorrectionForce, -params["effort_limit"], params["effort_limit"])};
 
